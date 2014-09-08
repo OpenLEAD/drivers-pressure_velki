@@ -1,7 +1,8 @@
 rock_library(pressure_velki
-    SOURCES Dummy.cpp
-    HEADERS Dummy.hpp)
+    SOURCES Errors.cpp Packet.cpp DriverClass5_20.cpp
+    HEADERS Errors.hpp Packet.hpp DriverClass5_20.hpp
+    DEPS_PKGCONFIG iodrivers_base base-lib)
 
-rock_executable(pressure_velki_bin Main.cpp
+rock_executable(pressure_velki_read
+    SOURCES Main.cpp
     DEPS pressure_velki)
-
