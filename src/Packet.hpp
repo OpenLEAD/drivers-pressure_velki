@@ -40,6 +40,20 @@ namespace pressure_velki
         Packet();
         Packet(byte address, byte function);
 
+        /** Return the device address */
+        byte getAddress() const;
+
+        /** Return the requested function */
+        byte getFunction() const;
+
+        /** Returns true if the error flag is set
+         */
+        bool hasError() const;
+
+        /** If this packet is an error response, returns the error code
+         */
+        Error::ERROR_CODE getErrorCode() const;
+
         /** Add a single byte to the payload */
         void addByte(byte b);
 
@@ -73,14 +87,6 @@ namespace pressure_velki
          * @throw InvalidCRC if the buffer's CRC is invalid
          */
         bool unmarshal(byte const* buffer, int size);
-
-        /** Returns true if the error flag is set
-         */
-        bool hasError() const;
-
-        /** If this packet is an error response, returns the error code
-         */
-        Error::ERROR_CODE getErrorCode() const;
 
         /** Tests if the checksum in the buffer is valid.
          *

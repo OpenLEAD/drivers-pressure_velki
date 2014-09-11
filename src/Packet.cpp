@@ -20,9 +20,39 @@ Packet::Packet(byte address, byte function)
 {
 }
 
+byte Packet::getAddress() const
+{
+    return address;
+}
+
+byte Packet::getFunction() const
+{
+    return function;
+}
+
+byte const* Packet::getPayload() const
+{
+    return payload;
+}
+
+int Packet::getPayloadSize() const
+{
+    return payload_size;
+}
+
 byte const& Packet::operator [](int i) const
 {
     return payload[i];
+}
+
+bool Packet::hasError() const
+{
+    return error;
+}
+
+Error::ERROR_CODE Packet::getErrorCode() const
+{
+    return static_cast<Error::ERROR_CODE>(payload[0]);
 }
 
 void Packet::addByte(byte b)
@@ -80,15 +110,5 @@ bool Packet::unmarshal(byte const* buffer, int size)
     payload_size = size - 4;
     memcpy(payload, buffer + 2, payload_size);
     return error;
-}
-
-bool Packet::hasError() const
-{
-    return error;
-}
-
-Error::ERROR_CODE Packet::getErrorCode() const
-{
-    return static_cast<Error::ERROR_CODE>(payload[0]);
 }
 
