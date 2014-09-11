@@ -93,7 +93,7 @@ bool Packet::isChecksumValid(byte const* begin, byte const* end)
     crc.process_block(begin, end - 2);
     boost::uint16_t expected_checksum = crc.checksum();
     boost::uint16_t actual_checksum =
-        static_cast<boost::uint16_t>(*(end - 2)) << 16 |
+        static_cast<boost::uint16_t>(*(end - 2)) << 8 |
         static_cast<boost::uint16_t>(*(end - 1));
     return actual_checksum == expected_checksum;
 }
