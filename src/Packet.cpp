@@ -6,6 +6,34 @@
 using namespace pressure_velki;
 using namespace std;
 
+// I've tried to use boost's CRC implementation, but could not manage to
+// configure it to match the CRC expected by Velki. This is the CRC calculation
+// from the Velki docs.
+static boost::uint16_t crc(byte const* begin, byte const* end)
+{
+    unsigned int crc = 0xFFFF;
+    
+    for (byte const* it = begin; it != end; ++it)
+    {
+        crc ^= *it;
+        for (int n = 0; n < 8; ++n)
+        {
+            if (crc & 0x1)
+            {
+                crc >>= 1;
+                crc ^= 0xA001;
+            }
+            else
+            {
+                crc >>= 1;
+            }
+        }
+    }
+
+    return crc;
+}
+
+
 Packet::Packet()
     : address(0)
     , function(0)
@@ -80,18 +108,14 @@ void Packet::marshal(vector<byte>& buffer) const
     buffer.insert(buffer.end(), payload, payload + payload_size);
     byte* crc_begin = &buffer[buffer.size() - 2 - payload_size];
     
-    boost::crc_16_type crc;
-    crc.process_block(crc_begin, &buffer[buffer.size()]);
-    boost::uint16_t checksum = crc.checksum();
+    boost::uint16_t checksum = crc(crc_begin, &buffer[buffer.size()]);
     buffer.push_back(checksum >> 8);
     buffer.push_back(checksum & 0xFF);
 }
 
 bool Packet::isChecksumValid(byte const* begin, byte const* end)
 {
-    boost::crc_16_type crc;
-    crc.process_block(begin, end - 2);
-    boost::uint16_t expected_checksum = crc.checksum();
+    boost::uint16_t expected_checksum = crc(begin, end - 2);
     boost::uint16_t actual_checksum =
         static_cast<boost::uint16_t>(*(end - 2)) << 8 |
         static_cast<boost::uint16_t>(*(end - 1));
