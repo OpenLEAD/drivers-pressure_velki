@@ -10,6 +10,8 @@ using namespace std;
 DriverClass5_20::DriverClass5_20()
     : iodrivers_base::Driver(Packet::MAXIMUM_PACKET_SIZE)
 {
+    setWriteTimeout(base::Time::fromSeconds(1));
+    setReadTimeout(base::Time::fromSeconds(1));
 }
 
 DeviceInfo DriverClass5_20::initialize(int device)
