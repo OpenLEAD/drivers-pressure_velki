@@ -77,3 +77,15 @@ BOOST_AUTO_TEST_CASE(marshal_and_unmarshal_should_be_identity)
     result.unmarshal(&buffer[0], buffer.size());
 }
 
+BOOST_AUTO_TEST_CASE(Packet_crc_calculation)
+{
+    // Velki provides expected CRC values for the initialize packet. Verify that
+    // we match
+    pressure_velki::Packet packet(250, 48);
+    vector<byte> buffer;
+    packet.marshal(buffer);
+
+    BOOST_CHECK_EQUAL(4, buffer[buffer.size() - 2]);
+    BOOST_CHECK_EQUAL(67, buffer[buffer.size() - 1]);
+}
+
