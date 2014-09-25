@@ -8,7 +8,7 @@ using namespace pressure_velki;
 using namespace std;
 
 DriverClass5_20::DriverClass5_20()
-    : iodrivers_base::Driver(Packet::MAXIMUM_PAYLOAD_SIZE + 4)
+    : iodrivers_base::Driver(Packet::MAXIMUM_PACKET_SIZE)
 {
 }
 
@@ -100,8 +100,8 @@ void DriverClass5_20::writePacket(Packet const& packet)
 
 Packet DriverClass5_20::readPacket()
 {
-    byte buffer[Packet::MAXIMUM_PAYLOAD_SIZE];
-    int packet_size = iodrivers_base::Driver::readPacket(buffer, Packet::MAXIMUM_PAYLOAD_SIZE);
+    byte buffer[Packet::MAXIMUM_PACKET_SIZE];
+    int packet_size = iodrivers_base::Driver::readPacket(buffer, Packet::MAXIMUM_PACKET_SIZE);
     Packet packet;
     packet.unmarshal(buffer, packet_size);
     return packet;

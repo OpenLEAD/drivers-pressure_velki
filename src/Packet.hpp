@@ -25,6 +25,7 @@ namespace pressure_velki
         static const int ADDRESS_BROADCAST = 0;
         static const int ADDRESS_POINT_TO_POINT = 250;
         static const int MAXIMUM_PAYLOAD_SIZE = 64;
+        static const int MAXIMUM_PACKET_SIZE = MAXIMUM_PAYLOAD_SIZE + 4;
 
     private:
         bool error;
