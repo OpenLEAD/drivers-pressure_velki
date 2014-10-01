@@ -97,6 +97,7 @@ void DriverClass5_20::writePacket(Packet const& packet)
 {
     writeBuffer.clear();
     packet.marshal(writeBuffer);
+    LOG_DEBUG_S << "sending " << binary_com(&writeBuffer[0], writeBuffer.size());
     iodrivers_base::Driver::writePacket(&writeBuffer[0], writeBuffer.size());
 }
 
@@ -126,16 +127,26 @@ Packet DriverClass5_20::readResponse(int address, int function, int expectedSize
 
 int DriverClass5_20::extractPacket(uint8_t const* buffer, size_t buffer_size) const
 {
+    LOG_DEBUG_S << "parsing " << buffer_size << " bytes: " << binary_com(buffer, buffer_size);
     // All packets have address, function and CRC on top of payload
     size_t expectedPacketSize = expectedPayloadSize + 4;
     if (buffer_size < expectedPacketSize)
         return 0;
     if (buffer[0] != expectedAddress)
+    {
+        LOG_DEBUG_S << "  unexpected address";
         return -1;
+    }
     if ((buffer[1] & 0x7F) != expectedFunction)
+    {
+        LOG_DEBUG_S << "  unexpected function";
         return -1;
-    if (Packet::isChecksumValid(buffer, buffer + expectedPacketSize))
-        return expectedPacketSize;
-    return -1;
+    }
+    if (!Packet::isChecksumValid(buffer, buffer + expectedPacketSize))
+    {
+        LOG_DEBUG_S << "  invalid checksum";
+        return -1;
+    }
+    return expectedPacketSize;
 }
 
