@@ -89,3 +89,10 @@ BOOST_AUTO_TEST_CASE(Packet_crc_calculation)
     BOOST_CHECK_EQUAL(67, buffer[buffer.size() - 1]);
 }
 
+BOOST_AUTO_TEST_CASE(Packet_isChecksumValid)
+{
+    pressure_velki::Packet packet(250, 48);
+    vector<byte> buffer;
+    packet.marshal(buffer);
+    BOOST_REQUIRE( Packet::isChecksumValid(&buffer[0], &buffer[buffer.size()]) );
+}
