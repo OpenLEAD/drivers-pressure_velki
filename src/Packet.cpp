@@ -136,3 +136,13 @@ bool Packet::unmarshal(byte const* buffer, int size)
     return error;
 }
 
+float Packet::parseFloat(byte const* buffer)
+{
+    uint32_t raw = 0;
+    raw |= static_cast<uint32_t>(buffer[0]) << 24;
+    raw |= static_cast<uint32_t>(buffer[1]) << 16;
+    raw |= static_cast<uint32_t>(buffer[2]) << 8;
+    raw |= static_cast<uint32_t>(buffer[3]) << 0;
+    return reinterpret_cast<float&>(raw);
+}
+

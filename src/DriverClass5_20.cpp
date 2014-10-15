@@ -65,13 +65,18 @@ float DriverClass5_20::readChannel(CHANNEL_ID id, int device)
     writePacket(packet);
     Packet response = readResponse(device, FUNCTION_READ_CHANNEL, 5);
 
-    float value = *reinterpret_cast<float const*>(&response[0]);
+    float value = Packet::parseFloat(&response[0]);
     int stat = response[4];
     if (stat & 0x8) // not ready
         throw PoweringUp(device);
     else if (stat & 0x7)
     {
-        LOG_WARN_S << "error while reading channel " << id << " on device " << device;
+        LOG_WARN_S << "saturated analog input on device " << device;
+        return base::unknown<float>();
+    }
+    else if (stat & id)
+    {
+        LOG_WARN_S << "measure or computation error on channel " << id << " on device " << device;
         return base::unknown<float>();
     }
 

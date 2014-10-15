@@ -95,6 +95,10 @@ namespace pressure_velki
          * bytes are the checksum
          */
         static bool isChecksumValid(byte const* begin, byte const* end);
+
+        /** Converts a floating-point value as marshalled by Velkin into a float
+         */
+        static float parseFloat(byte const* buffer);
     };
 }
 

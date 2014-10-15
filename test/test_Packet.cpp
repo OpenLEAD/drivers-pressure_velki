@@ -96,3 +96,33 @@ BOOST_AUTO_TEST_CASE(Packet_isChecksumValid)
     packet.marshal(buffer);
     BOOST_REQUIRE( Packet::isChecksumValid(&buffer[0], &buffer[buffer.size()]) );
 }
+
+BOOST_AUTO_TEST_CASE(Packet_parseFloat)
+{
+    {
+        byte marshalled[4] = { 63, 109, 186, 172 };
+        float result = Packet::parseFloat(marshalled);
+        BOOST_CHECK_CLOSE(0.9286296f, result, 0.0001);
+    }
+    {
+        byte marshalled[4] = { 63, 109, 177, 83 };
+        float result = Packet::parseFloat(marshalled);
+        BOOST_CHECK_CLOSE(0.9284870f, result, 0.0001);
+    }
+    {
+        byte marshalled[4] = { 63, 109, 178, 242 };
+        float result = Packet::parseFloat(marshalled);
+        BOOST_CHECK_CLOSE(0.9285117f, result, 0.0001);
+    }
+    {
+        byte marshalled[4] = { 65, 201, 184, 0 };
+        float result = Packet::parseFloat(marshalled);
+        BOOST_CHECK_CLOSE(25.21484f, result, 0.0001);
+    }
+    {
+        byte marshalled[4] = { 65, 202, 81, 128 };
+        float result = Packet::parseFloat(marshalled);
+        BOOST_CHECK_CLOSE(25.28979f, result, 0.0001);
+    }
+
+}
