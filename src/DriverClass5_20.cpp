@@ -41,12 +41,13 @@ int DriverClass5_20::getSerialNumber(int device)
         static_cast<int>(response[3]);
 }
 
-float DriverClass5_20::readPressure(int id, int device)
+base::Pressure DriverClass5_20::readPressure(int id, int device)
 {
     if (id < 0 || id > 1)
         throw std::runtime_error("invalid pressure channel selected");
 
-    return readChannel(static_cast<CHANNEL_ID>(CHANNEL_PRESSURE0 + id), device);
+    float bar = readChannel(static_cast<CHANNEL_ID>(CHANNEL_PRESSURE0 + id), device);
+    return base::Pressure::fromBar(bar);
 }
 
 float DriverClass5_20::readTemperatureOfPressureSensor(int id, int device)

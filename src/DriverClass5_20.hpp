@@ -2,6 +2,7 @@
 #define PRESSURE_VELKI_DRIVER_CLASS5_20_HPP
 
 #include <boost/cstdint.hpp>
+#include <base/Pressure.hpp>
 #include <iodrivers_base/Driver.hpp>
 #include <pressure_velki/Packet.hpp>
 #include <pressure_velki/DeviceInfo.hpp>
@@ -54,9 +55,9 @@ namespace pressure_velki
         /** Read one pressure channel
          *
          * @param the pressure channel to read (either 0 or 1)
-         * @return the pressure in bar
+         * @return the pressure
          */
-        float readPressure(int id, int device = Packet::ADDRESS_POINT_TO_POINT);
+        base::Pressure readPressure(int id, int device = Packet::ADDRESS_POINT_TO_POINT);
 
         /** Read the temperature of one pressure sensor
          *

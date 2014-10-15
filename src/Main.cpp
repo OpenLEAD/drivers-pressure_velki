@@ -1,5 +1,6 @@
 #include <iostream>
 #include <pressure_velki/DriverClass5_20.hpp>
+#include <base/Pressure.hpp>
 
 using namespace pressure_velki;
 using namespace std;
@@ -22,8 +23,9 @@ int main(int argc, char** argv)
     while (true)
     {
         cout
-            << "P0=" << driver.readPressure(0) << " T0=" << driver.readTemperatureOfPressureSensor(0)
-            << "P1=" << driver.readPressure(1) << " T1=" << driver.readTemperatureOfPressureSensor(1)
+            << "P0=" << driver.readPressure(0).toBar() << "bar T0=" << driver.readTemperatureOfPressureSensor(0) << "C"
+            << " "
+            << "P1=" << driver.readPressure(1).toBar() << "bar T1=" << driver.readTemperatureOfPressureSensor(1) << "C"
             << endl;
     }
 
