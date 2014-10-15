@@ -84,6 +84,15 @@ float DriverClass5_20::readChannel(CHANNEL_ID id, int device)
     return value;
 }
 
+bool DriverClass5_20::isAbsolute(int device)
+{
+    Packet packet(device, FUNCTION_CONFIGURATION_READ);
+    packet.addByte(14);
+    writePacket(packet);
+    Packet response = readResponse(device, FUNCTION_CONFIGURATION_READ, 1);
+    return (response[0] != 0);
+}
+
 void DriverClass5_20::echo(int device)
 {
     uint8_t payload[4] = { 0, 0, 0xE, 0x8 };

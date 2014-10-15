@@ -20,6 +20,9 @@ int main(int argc, char** argv)
         "Firmware: year=" << info.firmwareYear << ", week=" << info.firmwareWeek << "\n" <<
         "Internal buffer size: " << info.internalBufferSize << " bytes" << endl;
 
+    bool absolute = driver.isAbsolute();
+    cout << "This device measures " << (absolute ? "absolute" : "relative") << " pressures" << endl;
+
     while (true)
     {
         cout

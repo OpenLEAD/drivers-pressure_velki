@@ -16,6 +16,7 @@ namespace pressure_velki
             FUNCTION_ECHO = 8,
             FUNCTION_INITIALIZE = 48,
             FUNCTION_SERIAL_NUMBER = 69,
+            FUNCTION_CONFIGURATION_READ = 32,
             FUNCTION_READ_CHANNEL = 73
         };
 
@@ -65,6 +66,10 @@ namespace pressure_velki
          * @return the temperature in celsius
          */
         float readTemperatureOfPressureSensor(int id, int device = Packet::ADDRESS_POINT_TO_POINT);
+
+        /** Returns whether the sensor measures absolute or relative pressures
+         */
+        bool isAbsolute(int device = Packet::ADDRESS_POINT_TO_POINT);
 
     protected:
         std::vector<byte> writeBuffer;
